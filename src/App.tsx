@@ -10,6 +10,13 @@ import Signup from "./pages/Signup";
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
 import Checkout from "./pages/Checkout";
+import Menu from "./pages/Menu";
+import Offers from "./pages/Offers";
+import Help from "./pages/Help";
+import AdminDashboard from "./pages/AdminDashboard";
+import DeliveryDashboard from "./pages/DeliveryDashboard";
+import Restaurants from "./pages/Restaurants";
+import RestaurantDashboard from "./pages/RestaurantDashboard";
 import NotFound from "./pages/NotFound";
 
 function AppContent() {
@@ -27,6 +34,13 @@ function AppContent() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/offers" element={<Offers />} />
+        <Route path="/help" element={<Help />} />
+        <Route path="/restaurants" element={<Restaurants />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/delivery" element={<DeliveryDashboard />} />
+        <Route path="/restaurant" element={<RestaurantDashboard />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>

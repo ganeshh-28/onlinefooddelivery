@@ -6,13 +6,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Eye, EyeOff, Mail, Lock, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, ArrowLeft, Users } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    role: "",
   });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
 
@@ -23,6 +25,13 @@ export default function Login() {
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleRoleChange = (value: string) => {
+    setFormData(prev => ({ ...prev, role: value }));
+    if (errors.role) {
+      setErrors(prev => ({ ...prev, role: "" }));
     }
   };
 
@@ -39,6 +48,10 @@ export default function Login() {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
+    }
+
+    if (!formData.role) {
+      newErrors.role = "Please select your role";
     }
 
     return newErrors;
@@ -100,6 +113,28 @@ export default function Login() {
                 </div>
                 {errors.email && (
                   <p className="text-sm text-destructive">{errors.email}</p>
+                )}
+              </div>
+
+              {/* Role Selection */}
+              <div className="space-y-2">
+                <Label htmlFor="role">Login As</Label>
+                <div className="relative">
+                  <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 z-10" />
+                  <Select value={formData.role} onValueChange={handleRoleChange}>
+                    <SelectTrigger className={`pl-10 ${errors.role ? 'border-destructive' : ''}`}>
+                      <SelectValue placeholder="Select your role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="customer">Customer</SelectItem>
+                      <SelectItem value="restaurant">Restaurant Owner</SelectItem>
+                      <SelectItem value="delivery">Delivery Agent</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                {errors.role && (
+                  <p className="text-sm text-destructive">{errors.role}</p>
                 )}
               </div>
 

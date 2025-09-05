@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Eye, EyeOff, Mail, Lock, User, Phone, MapPin, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, Phone, MapPin, ArrowLeft, Users } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,6 +19,7 @@ export default function Signup() {
     address: "",
     password: "",
     confirmPassword: "",
+    role: "",
   });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
 
@@ -28,6 +30,13 @@ export default function Signup() {
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleRoleChange = (value: string) => {
+    setFormData(prev => ({ ...prev, role: value }));
+    if (errors.role) {
+      setErrors(prev => ({ ...prev, role: "" }));
     }
   };
 
@@ -68,6 +77,10 @@ export default function Signup() {
       newErrors.confirmPassword = "Please confirm your password";
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    if (!formData.role) {
+      newErrors.role = "Please select your role";
     }
 
     return newErrors;
@@ -174,7 +187,7 @@ export default function Signup() {
 
               {/* Address Field */}
               <div className="space-y-2">
-                <Label htmlFor="address">Delivery Address</Label>
+                <Label htmlFor="address">Address</Label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-3 text-muted-foreground w-4 h-4" />
                   <Input
@@ -189,6 +202,28 @@ export default function Signup() {
                 </div>
                 {errors.address && (
                   <p className="text-sm text-destructive">{errors.address}</p>
+                )}
+              </div>
+
+              {/* Role Selection */}
+              <div className="space-y-2">
+                <Label htmlFor="role">Register As</Label>
+                <div className="relative">
+                  <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 z-10" />
+                  <Select value={formData.role} onValueChange={handleRoleChange}>
+                    <SelectTrigger className={`pl-10 ${errors.role ? 'border-destructive' : ''}`}>
+                      <SelectValue placeholder="Select your role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="customer">Customer</SelectItem>
+                      <SelectItem value="restaurant">Restaurant Owner</SelectItem>
+                      <SelectItem value="delivery">Delivery Agent</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                {errors.role && (
+                  <p className="text-sm text-destructive">{errors.role}</p>
                 )}
               </div>
 
